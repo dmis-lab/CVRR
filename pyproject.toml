@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cvrr"
+version = "0.1.0"
+description = "Causal Visual Recurrent Reasoning for Qwen2.5-VL"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.4",
+  "transformers==4.57.6",
+  "peft==0.17.1",
+  "accelerate>=1.0",
+  "datasets>=3.0",
+  "safetensors>=0.5",
+  "qwen-vl-utils>=0.0.10",
+  "numpy>=1.26",
+  "Pillow>=10.0",
+  "PyYAML>=6.0",
+  "tqdm>=4.66",
+]
+
+[tool.setuptools.packages.find]
+include = ["cvrr*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["."]

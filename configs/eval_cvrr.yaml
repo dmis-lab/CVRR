@@ -1,0 +1,14 @@
+checkpoint: /path/to/cvrr-checkpoint
+processor: Qwen/Qwen2.5-VL-7B-Instruct
+output_dir: predictions/cvrr
+device: cuda:0
+benchmarks:
+  - vstar
+  - mmvp
+  - blink
+  - mme_lite
+prediction_mode: greedy
+max_new_tokens: 32
+max_visual_tokens: 8192
+beta: 0.5
+local_files_only: false

@@ -1,0 +1,40 @@
+model:
+  base_model_name_or_path: Qwen/Qwen2.5-VL-7B-Instruct
+  ell_star: 20
+  num_recurrent_steps: 4
+  beta: 0.5
+  lora_rank: 32
+  lora_alpha: 16
+  lora_dropout: 0.01
+  per_example_answer_loss: true
+
+data:
+  path: /path/to/visual_cot_arrow
+  train_split: train
+  validation_split: validation
+  max_visual_tokens: 8192
+
+training:
+  output_dir: outputs/cvrr-qwen2.5-vl-7b
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 2
+  learning_rate: 5.0e-5
+  max_steps: 500
+  warmup_steps: 343
+  lr_scheduler_type: cosine
+  lr_scheduler_kwargs:
+    num_cycles: 0.02537168713639302
+  max_grad_norm: 2.0
+  bf16: true
+  tf32: true
+  dataloader_num_workers: 8
+  dataloader_drop_last: true
+  ddp_find_unused_parameters: false
+  eval_strategy: "no"
+  save_strategy: steps
+  save_steps: 250
+  save_total_limit: 3
+  logging_steps: 5
+  report_to: none
+  seed: 0
