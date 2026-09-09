@@ -162,7 +162,7 @@ import torch
 from PIL import Image
 from transformers import AutoModelForImageTextToText, AutoProcessor
 
-checkpoint = "organization/cvrr-qwen2.5-vl-7b"
+checkpoint = "dmis-lab/Qwen2.5-VL-7B-CVRR"
 processor = AutoProcessor.from_pretrained(checkpoint, trust_remote_code=True)
 model = AutoModelForImageTextToText.from_pretrained(
     checkpoint,
