@@ -269,3 +269,16 @@ CVRR/
 ├── requirements.txt
 └── README.md
 ```
+
+## Citation
+```bibtex
+@misc{park2026reasonlatentmakinglatent,
+      title={Reason Through the Latent! Making Latent Visual Reasoning Necessary}, 
+      author={Suhyeong Park and Junha Jung and Jaewoo Kang},
+      year={2026},
+      eprint={2609.06746},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2609.06746}, 
+}
+```
