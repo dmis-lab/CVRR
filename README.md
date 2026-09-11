@@ -270,7 +270,7 @@ CVRR/
 └── README.md
 ```
 
-## Citation
+<!--## Citation
 ```bibtex
 @misc{park2026reasonlatentmakinglatent,
       title={Reason Through the Latent! Making Latent Visual Reasoning Necessary}, 
@@ -281,4 +281,4 @@ CVRR/
       primaryClass={cs.AI},
       url={https://arxiv.org/abs/2609.06746}, 
 }
-```
+```-->
