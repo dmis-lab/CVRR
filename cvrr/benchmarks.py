@@ -308,14 +308,24 @@ def summarize(records: Iterable[dict]) -> dict:
         "overall": _score([bool(record["correct"]) for record in records]),
         "tasks": {key: _score(value) for key, value in sorted(by_task.items())},
     }
-    mmvp = sorted(
-        (record for record in records if record["benchmark"] == "mmvp"),
-        key=lambda record: int(record["qid"]),
-    )
-    pairs = [mmvp[index : index + 2] for index in range(0, len(mmvp) - 1, 2)]
-    if pairs:
+    pairs: dict[int, dict[int, bool]] = collections.defaultdict(dict)
+    for record in records:
+        if record["benchmark"] != "mmvp":
+            continue
+        qid = int(record["qid"])
+        if qid < 1:
+            raise ValueError("MMVP question IDs must be positive")
+        pair = pairs[(qid - 1) // 2]
+        if qid in pair:
+            raise ValueError(f"duplicate MMVP question ID: {qid}")
+        pair[qid] = bool(record["correct"])
+    incomplete_pairs = sum(len(pair) != 2 for pair in pairs.values())
+    if incomplete_pairs:
+        # Item shards may split pairs; score only after their records are merged.
+        summary["incomplete_pairs"] = incomplete_pairs
+    elif pairs:
         summary["pair"] = _score(
-            [all(record["correct"] for record in pair) for pair in pairs]
+            [all(pair.values()) for pair in pairs.values()]
         )
     return summary
 

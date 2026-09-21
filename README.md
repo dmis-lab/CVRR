@@ -128,6 +128,29 @@ bash scripts/eval.sh configs/eval_cvrr.yaml \
 
 The evaluator saves raw JSONL predictions and aggregate JSON summaries.
 
+MMVP pairs use the original question IDs: (1, 2), (3, 4), and so on; both
+answers must be correct. Item shards can split these pairs. When a partner is
+missing, the summary reports `incomplete_pairs` and omits `pair` accuracy.
+Combine all shards from the same checkpoint and evaluation protocol before
+computing the final Pair score; do not average shard Pair scores. For four
+completed shards:
+
+```bash
+python - <<'PY'
+import json
+from pathlib import Path
+from cvrr.benchmarks import summarize
+
+rows = []
+for shard in range(4):
+    path = Path(f"predictions/shard-{shard}/mmvp.predictions.jsonl")
+    rows.extend(json.loads(line) for line in path.read_text().splitlines() if line.strip())
+if {int(row["qid"]) for row in rows} != set(range(1, 301)):
+    raise ValueError("Expected all 300 MMVP questions before final scoring")
+print(json.dumps(summarize(rows), indent=2))
+PY
+```
+
 ### Step 4: Export a Hugging Face Checkpoint
 
 Convert a full training checkpoint into a clean Hugging Face directory:
