@@ -151,7 +151,7 @@ import torch
 from PIL import Image
 from transformers import AutoModelForImageTextToText, AutoProcessor
 
-checkpoint = "/path/to/cvrr-hf"
+checkpoint = "/path/to/cvrr"
 processor = AutoProcessor.from_pretrained(checkpoint, trust_remote_code=True)
 model = AutoModelForImageTextToText.from_pretrained(
     checkpoint,
