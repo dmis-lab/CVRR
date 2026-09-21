@@ -61,7 +61,7 @@ def main() -> int:
     parser.add_argument("--num-recurrent-steps", type=int, default=4)
     parser.add_argument("--beta", type=float, default=0.5)
     parser.add_argument("--lora-rank", type=int, default=32)
-    parser.add_argument("--lora-alpha", type=int, default=12)
+    parser.add_argument("--lora-alpha", type=int, default=16)
     parser.add_argument("--lora-dropout", type=float, default=0.01)
     args = parser.parse_args()
     source = Path(args.checkpoint).resolve()

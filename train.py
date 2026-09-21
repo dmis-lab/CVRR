@@ -113,7 +113,7 @@ def main() -> int:
     processor.save_pretrained(training_args.output_dir)
 
     metadata = {
-        "config": str(Path(args.config).resolve()),
+        "config": Path(args.config).name,
         "seed": seed,
         "train_examples": len(train_dataset),
         "validation_examples": len(eval_dataset) if eval_dataset is not None else 0,

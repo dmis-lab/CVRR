@@ -16,24 +16,25 @@ data:
 
 training:
   output_dir: outputs/cvrr-qwen2.5-vl-7b
-  per_device_train_batch_size: 16
+  per_device_train_batch_size: 32
   per_device_eval_batch_size: 4
-  gradient_accumulation_steps: 2
-  learning_rate: 5.0e-5
-  max_steps: 500
-  warmup_steps: 343
+  gradient_accumulation_steps: 1
+  optim: adamw_torch
+  learning_rate: 2.0e-5
+  num_train_epochs: 3
+  warmup_ratio: 0.05
   lr_scheduler_type: cosine
-  lr_scheduler_kwargs:
-    num_cycles: 0.02537168713639302
-  max_grad_norm: 2.0
+  max_grad_norm: 1.0
   bf16: true
   tf32: true
   dataloader_num_workers: 8
   dataloader_drop_last: true
   ddp_find_unused_parameters: false
-  eval_strategy: "no"
-  save_strategy: steps
-  save_steps: 250
+  eval_strategy: epoch
+  save_strategy: epoch
+  load_best_model_at_end: true
+  metric_for_best_model: eval_loss
+  greater_is_better: false
   save_total_limit: 3
   logging_steps: 5
   report_to: none

@@ -21,7 +21,7 @@ class CVRRConfig(Qwen2_5_VLConfig):
         num_recurrent_steps: int = 4,
         beta: float = 0.5,
         lora_rank: int = 32,
-        lora_alpha: int = 12,
+        lora_alpha: int = 16,
         lora_dropout: float = 0.01,
         base_model_name_or_path: str = "Qwen/Qwen2.5-VL-7B-Instruct",
         per_example_answer_loss: bool = True,

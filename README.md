@@ -92,8 +92,10 @@ bash scripts/train.sh configs/train_cvrr_qwen25_7b.yaml
 ```
 
 The launcher infers one process per visible device when `NPROC_PER_NODE` is
-not specified. The reference recipe uses per-device batch size 16 and gradient
-accumulation 2 on four GPUs, giving an effective batch size of 128.
+not specified. The reference recipe uses per-device batch size 32 and gradient
+accumulation 1 on four GPUs, giving an effective batch size of 128. Training runs
+for three epochs and restores the checkpoint with the lowest validation loss
+before saving the model.
 
 To select a different output directory or resume training:
 
@@ -126,20 +128,7 @@ bash scripts/eval.sh configs/eval_cvrr.yaml \
 
 The evaluator saves raw JSONL predictions and aggregate JSON summaries.
 
-### Step 4: Run Causal Analyses
-
-All released analyses use one command dispatcher:
-
-```bash
-bash scripts/analyze.sh --help
-```
-
-The available commands cover boundary localization, causal intervention,
-recurrence controls, learned-transition diagnostics, and efficiency. See
-[`scripts/analysis_cvrr/README.md`](scripts/analysis_cvrr/README.md) for exact
-inputs and commands.
-
-### Step 5: Export a Hugging Face Checkpoint
+### Step 4: Export a Hugging Face Checkpoint
 
 Convert a full training checkpoint into a clean Hugging Face directory:
 
@@ -162,7 +151,7 @@ import torch
 from PIL import Image
 from transformers import AutoModelForImageTextToText, AutoProcessor
 
-checkpoint = "dmis-lab/Qwen2.5-VL-7B-CVRR"
+checkpoint = "/path/to/cvrr-hf"
 processor = AutoProcessor.from_pretrained(checkpoint, trust_remote_code=True)
 model = AutoModelForImageTextToText.from_pretrained(
     checkpoint,
@@ -234,7 +223,7 @@ The common evaluator supports:
 Two prediction protocols are implemented:
 
 - `greedy`: deterministic answer generation with a shared token budget.
-- `choice_logits`: restricted first-option-token scoring for causal analyses.
+- `choice_logits`: restricted first-option-token scoring.
 
 These protocols measure different quantities and should not be mixed in one
 comparison. The evaluator applies a common visual-token ceiling of 8,192 and a
@@ -253,12 +242,6 @@ CVRR/
 │   ├── data.py                     # Visual-CoT loader and collator
 │   └── modeling_cvrr.py            # Strict recurrent model implementation
 ├── scripts/
-│   ├── analysis_cvrr/              # Causal and mechanistic analyses
-│   │   ├── causal/                 # State interventions
-│   │   ├── core/                   # Shared runtime, data, and statistics
-│   │   ├── diagnostics/            # Transition diagnostics
-│   │   └── recurrence/             # Recurrent controls and ablations
-│   ├── analyze.sh                  # Analysis dispatcher
 │   ├── eval.sh                     # Evaluation launcher
 │   └── train.sh                    # Single- or multi-GPU training launcher
 ├── tests/                          # CPU structural and forward tests
@@ -269,16 +252,3 @@ CVRR/
 ├── requirements.txt
 └── README.md
 ```
-
-<!--## Citation
-```bibtex
-@misc{park2026reasonlatentmakinglatent,
-      title={Reason Through the Latent! Making Latent Visual Reasoning Necessary}, 
-      author={Suhyeong Park and Junha Jung and Jaewoo Kang},
-      year={2026},
-      eprint={2609.06746},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2609.06746}, 
-}
-```-->
