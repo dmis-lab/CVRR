@@ -128,6 +128,13 @@ bash scripts/eval.sh configs/eval_cvrr.yaml \
 
 The evaluator saves raw JSONL predictions and aggregate JSON summaries.
 
+For sharded evaluation, use the same checkpoint and settings for every shard.
+Once all shards finish, concatenate each benchmark's raw
+`<benchmark>.predictions.jsonl` records and compute the final scores with
+`cvrr.benchmarks.summarize`. For MMVP, verify exactly 300 records with unique
+question IDs (1–300), then calculate Pair accuracy from the merged records.
+Do not average shard Pair scores.
+
 ### Step 4: Export a Hugging Face Checkpoint
 
 Convert a full training checkpoint into a clean Hugging Face directory:
