@@ -63,10 +63,10 @@ def extract_final_letter(value: object) -> str:
     if not isinstance(value, str):
         return ""
     patterns = (
-        r"<answer>\s*\(?\s*([A-E])\s*\)?(?:\s*</answer>)?",
+        r"<answer>\s*\(?\s*([A-E])(?![A-Za-z])\s*\)?(?:\s*</answer>)?",
         r"\\boxed\s*\{\s*\(?\s*([A-E])\s*\)?\s*\}",
-        r"(?:final\s+answer|answer)\s*(?:is|:|=)\s*\(?\s*([A-E])",
-        r"(?:option|choice)\s*\(?\s*([A-E])",
+        r"(?:final\s+answer|answer)\s*(?:is|:|=)\s*\(?\s*([A-E])(?![A-Za-z])",
+        r"(?:option|choice)\s*\(?\s*([A-E])(?![A-Za-z])",
     )
     for pattern in patterns:
         hits = re.findall(pattern, value, flags=re.IGNORECASE)
